@@ -8,3 +8,9 @@ enum class ECharacterState : uint8
 	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "Equipped One-Handed Weapon"),
 	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "Equipped Two-Handed Weapon")
 };
+
+enum class EActionState : uint8
+{
+	EAS_Unoccupied UMETA(Display = "Unoccupied"),
+	EAS_Attacking UMETA(Display = "Attacking")
+};
