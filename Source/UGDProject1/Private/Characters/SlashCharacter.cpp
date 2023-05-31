@@ -118,6 +118,20 @@ void ASlashCharacter::EKeyPressed()
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 	}
+	else 
+	{
+		if (CanDisarm()) 
+		{
+			PlayEquipMontage(FName("Unequip"));
+			CharacterState = ECharacterState::ECS_Unequipped;
+		}
+		if (CanArm())
+		{
+			PlayEquipMontage(FName("Equip"));
+			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+			//EquippedWeapon == OverlappingWeapon;
+		}
+	}
 }
 
 void ASlashCharacter::Attack()
@@ -134,6 +148,19 @@ bool ASlashCharacter::CanAttack()
 	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
 }
 
+
+
+bool ASlashCharacter::CanDisarm()
+{
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+bool ASlashCharacter::CanArm()
+{
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState == ECharacterState::ECS_Unequipped && EquippedWeapon;
+}
+
+//Plays the attack montage, random picks between the two attack types
 void ASlashCharacter::PlayAttackMontage()
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -154,6 +181,16 @@ void ASlashCharacter::PlayAttackMontage()
 			break;
 		}
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
+}
+
+void ASlashCharacter::PlayEquipMontage(FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)
+	{
+		AnimInstance->Montage_Play(EquipMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
 	}
 }
 
