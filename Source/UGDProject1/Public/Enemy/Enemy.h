@@ -28,6 +28,13 @@ private:
 	//Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* HitReactMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "Visual Effects")
+	UParticleSystem* HitParticles;
+
 protected:
 	virtual void BeginPlay() override;
 	//Play montage functions
